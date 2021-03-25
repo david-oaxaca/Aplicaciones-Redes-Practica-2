@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,12 +30,25 @@ public class Server_Sopa {
                                 "ZURICATA", "HURON", "TLACUACHE", "BALLENA", "TIBURON", "DINGO",
                                 "CARPINCHO"};
         
+        String [] Comida = {"PIZZA", "HAMBURGUESA", "SANDWICH", "SUSHI", "MILANESA", "TACOS",
+                            "SPAGHETTI", "LASAGNA", "TLAYUDAS", "CEREAL", "BROWNIES", "GALLETAS",
+                            "BOLILLO", "TORTA", "ENSALADA", "FILETE", "SOPA", "ALITAS", "NACHOS",
+                            "ATUN"};
+        
         sopa = operaciones.llenarSopa(sopa, Animales);
         operaciones.imprimirSopa(sopa);
         
-        /*try {
+        ArrayList <String> palabras = operaciones.getPalabras();
+        
+        for (int i = 0; i < 10; i++) {
+            System.out.println(palabras.get(i));
+        }
+        
+        try {
             ServerSocket ss = new ServerSocket(puerto);
             ss.setReuseAddress(true);
+            
+            System.out.println("Esperando a un cliente...");
             
             Socket sc = ss.accept();
             
@@ -44,9 +58,13 @@ public class Server_Sopa {
                     
             oos.writeObject(sopa);
             
+            oos.flush();
+            
+            oos.writeObject(palabras);
+            
         } catch (IOException ex) {
             Logger.getLogger(Server_Sopa.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
     }
     
 }

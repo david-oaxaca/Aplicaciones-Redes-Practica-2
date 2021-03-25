@@ -5,17 +5,19 @@
  */
 package sopa.de.letras;
 
+import java.io.Serializable;
+
 /**
  *
  * @author tdwda
  */
-public class SopaDeLetras {
+public class SopaDeLetras implements Serializable
+{
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public SopaDeLetras() {
     }
+
     
+    
+   
 }

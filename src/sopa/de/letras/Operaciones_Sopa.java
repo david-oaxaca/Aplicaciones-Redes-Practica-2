@@ -15,8 +15,8 @@ import java.util.Random;
  */
 public class Operaciones_Sopa {
     
+    private ArrayList <String> palabrasSDL = new ArrayList();//Palabras dentro de la sopa de letras
     
-
     public Operaciones_Sopa() {
     }
     
@@ -70,9 +70,9 @@ public class Operaciones_Sopa {
         int tam_col = matrix.length;
         int tam_fil = matrix[0].length; //Suponiendo que todas las filas son del mismo tam
         int cont = 0;
+        this.palabrasSDL.clear();
+        
         while (escogidas.size() > 5) {
-            
-            //System.out.println("" + cont);
             
             if(cont >= escogidas.size()) cont = 0;
             
@@ -86,7 +86,8 @@ public class Operaciones_Sopa {
                     matrix[columna - i][fila + i] = escogidas.get(cont).charAt(i);
                 }
 
-                System.out.println(fila + " , " + columna + " : " + escogidas.get(cont));
+                //System.out.println(fila + " , " + columna + " : " + escogidas.get(cont));
+                addPalabras(escogidas.get(cont));
                 escogidas.remove(cont);
 
             }else if(checarDisponibilidad(matrix, 0, 1, escogidas.get(cont), columna, fila)){ //Disponibiladad Este
@@ -95,27 +96,28 @@ public class Operaciones_Sopa {
                     matrix[columna][fila + i] = escogidas.get(cont).charAt(i);
                 }
 
-                System.out.println(fila + " , " + columna + " : " + escogidas.get(cont));
+                //System.out.println(fila + " , " + columna + " : " + escogidas.get(cont));
+                addPalabras(escogidas.get(cont));
                 escogidas.remove(cont);
                 
-
             }else if(checarDisponibilidad(matrix, 1, 1, escogidas.get(cont), columna, fila)){ //Disponibiladad Sureste
 
                 for (int i = 0; i < tam_palabra; i++) {
                     matrix[columna + i][fila + i] = escogidas.get(cont).charAt(i);
                 }
 
-                System.out.println(fila + " , " + columna + " : " + escogidas.get(cont));
+                //System.out.println(fila + " , " + columna + " : " + escogidas.get(cont));
+                addPalabras(escogidas.get(cont));
                 escogidas.remove(cont);
                 
-
             }else if(checarDisponibilidad(matrix, 1, 0, escogidas.get(cont), columna, fila)){ //Disponibiladad Sur
 
                 for (int i = 0; i < tam_palabra; i++) {
                     matrix[columna + i][fila] = escogidas.get(cont).charAt(i);
                 }
 
-                System.out.println(fila + " , " + columna + " : " + escogidas.get(cont));
+                //System.out.println(fila + " , " + columna + " : " + escogidas.get(cont));
+                addPalabras(escogidas.get(cont));
                 escogidas.remove(cont);
 
             }else if(checarDisponibilidad(matrix, 1, -1, escogidas.get(cont), columna, fila)){ //Disponibilidad Suroeste
@@ -124,47 +126,53 @@ public class Operaciones_Sopa {
                     matrix[columna + i][fila - i] = escogidas.get(cont).charAt(i);
                 }
 
-                System.out.println(fila + " , " + columna + " : " + escogidas.get(cont));
+                //System.out.println(fila + " , " + columna + " : " + escogidas.get(cont));
+                addPalabras(escogidas.get(cont));
                 escogidas.remove(escogidas.get(cont));
                 
-
             }else if(checarDisponibilidad(matrix, 0, -1, escogidas.get(cont), columna, fila)){ //Disponibilidad Oeste
 
                 for (int i = 0; i < tam_palabra; i++) {
                     matrix[columna][fila - i] = escogidas.get(cont).charAt(i);
                 }
 
-                System.out.println(fila + " , " + columna + " : " + escogidas.get(cont));
+                //System.out.println(fila + " , " + columna + " : " + escogidas.get(cont));
+                addPalabras(escogidas.get(cont));
                 escogidas.remove(cont);
                 
-
             }else if(checarDisponibilidad(matrix, -1, -1, escogidas.get(cont), columna, fila)){//Disponibilidad Noreste
 
                 for (int i = 0; i < tam_palabra; i++) {
                     matrix[columna - i][fila - i] = escogidas.get(cont).charAt(i);
                 }
 
-                System.out.println(fila + " , " + columna + " : " + escogidas.get(cont));
+                //System.out.println(fila + " , " + columna + " : " + escogidas.get(cont));
+                addPalabras(escogidas.get(cont));
                 escogidas.remove(cont);
                 
-
             }else if(checarDisponibilidad(matrix, -1, 0, escogidas.get(cont), columna, fila)){//Norte
 
                 for (int i = 0; i < tam_palabra; i++) {
                     matrix[columna - i][fila] = escogidas.get(cont).charAt(i);
                 }
 
-                System.out.println(fila + " , " + columna + " : " + escogidas.get(cont));
+                //System.out.println(fila + " , " + columna + " : " + escogidas.get(cont));
+                addPalabras(escogidas.get(cont));
                 escogidas.remove(cont);
                 
-
             }
-                
-            
             cont++;
         }
         
         return llenarVacios(matrix);
+    }
+    
+    public void addPalabras(String palabra){
+        this.palabrasSDL.add(palabra);
+    }
+    
+    public ArrayList <String> getPalabras(){
+        return this.palabrasSDL;
     }
     
     public void imprimirSopa(char [][] matrix){
