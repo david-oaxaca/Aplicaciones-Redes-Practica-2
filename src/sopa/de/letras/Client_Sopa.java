@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sopa.de.letras;
 
 import java.io.BufferedOutputStream;
@@ -15,16 +10,66 @@ import java.util.ArrayList;
 
 /**
  *
- * @author tdwda
+ * @author David Madrigal Buendía
+ * @author David Arturo Oaxaca Pérez
  */
 public class Client_Sopa {
     
     private ArrayList <Coordenadas> palabras;//Palabras dentro de la sopa de letras
     private char [][] SopaDeLetras;
+    private boolean seleccionar;
+    private int[] punto1, punto2;
+    private String palabra_encontrada;
     
     public Client_Sopa(){
-        
+        seleccionar= false;
+        punto1= new int[2];
+        punto2= new int[2];
+        palabra_encontrada= "";
     }
+    
+    public int guardarSeleccion(int x, int y) {
+        if(!seleccionar) {
+            seleccionar= true;
+            punto1[0]= x;
+            punto1[1]= y;
+            return 1;
+        }else {
+            seleccionar= false;
+            punto2[0]= x;
+            punto2[1]= y;
+            return verificarSeleccion();
+        }
+    }
+    //Devuleve verdadero si la palabra fue correcta
+    private int verificarSeleccion() {
+        System.out.println("Puntos: " + punto1[0] + ", " + punto1[1] + ": " + punto2[0] + ", " + punto2[1]);
+        for(Coordenadas palabra: palabras) {
+            System.out.println("Puntos Palabra: " + palabra.getInicio_x() + ", " + palabra.getInicio_y() + ": " + palabra.getFinal_x() + ", " + palabra.getFinal_y());
+            if(punto1[0] == palabra.getInicio_x() &&
+                    punto1[1] == palabra.getInicio_y() &&
+                    punto2[0] == palabra.getFinal_x() &&
+                    punto2[1] == palabra.getFinal_y()) {
+                System.out.println("Encontro: " + palabra.getPalabra());
+                palabra_encontrada= palabra.getPalabra();
+                return 2;
+            }else if(punto1[0] == palabra.getFinal_x() &&
+                        punto1[1] == palabra.getFinal_y() &&
+                        punto2[0] == palabra.getInicio_x() &&
+                        punto2[1] == palabra.getInicio_y()) {
+                System.out.println("Encontro: " + palabra.getPalabra());
+                palabra_encontrada= palabra.getPalabra();
+                return 2;
+            }
+        }
+        return 0;
+    }
+    
+    public int getxPos1() { return punto1[0]; }
+    public int getyPos1() { return punto1[1]; }
+    public int getxPos2() { return punto2[0]; }
+    public int getyPos2() { return punto2[1]; }
+    public String getPalabraEncontrada() { return palabra_encontrada; }
     
     public void requestSopa( String opc ) throws IOException, ClassNotFoundException {
         

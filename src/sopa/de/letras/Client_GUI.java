@@ -1,52 +1,37 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sopa.de.letras;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
-import javax.swing.Icon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileSystemView;
 
 /**
  *
- * @author tdwda
+ * @author David Madrigal Buendía
+ * @author David Arturo Oaxaca Pérez
  */
 public class Client_GUI extends JFrame implements ActionListener{
-    private JLabel [][] Sopa;
+    private JButton [][] Sopa;
     private JLabel [] PalabrasB;
     private JLabel lbl_Titulo, lbl_SubTitulo;
-    private JButton btn_Terminar;
+    private JButton btn_Terminar, btn_Chequeo;
     private Client_Sopa Cliente_s = new Client_Sopa();
+    private JPanel panel;
     
     public Client_GUI() throws IOException, ClassNotFoundException{
         iniciarVentana("Practica 2");
+        this.repaint();
         setVisible(true);
     }
     
@@ -81,14 +66,22 @@ public class Client_GUI extends JFrame implements ActionListener{
         iniciarSopa();
         
         btn_Terminar = new JButton("Terminar juego");
-        btn_Terminar.setBounds(75, 550, 125, 40);
+        btn_Terminar.setBounds(35, 550, 125, 40);
         btn_Terminar.addActionListener(this);
         this.add(btn_Terminar);
         
-        
+        btn_Chequeo = new JButton("Checar selección");
+        btn_Chequeo.setBounds(175, 550, 135, 40);
+        btn_Chequeo.addActionListener(this);
+        this.add(btn_Chequeo);
     }
     
     public void iniciarSopa() throws IOException, ClassNotFoundException{
+        /*panel= new JPanel();
+        panel.setBounds(325, 75, 480, 480);
+        panel.setLayout(null);
+        panel.setBackground(Color.WHITE);
+        this.add(panel);*/
         
         String Sopa_tema = seleccionSopa();
         
@@ -101,7 +94,6 @@ public class Client_GUI extends JFrame implements ActionListener{
         }else{
             System.exit(0);
         }
-        
     }
     
     
@@ -128,46 +120,71 @@ public class Client_GUI extends JFrame implements ActionListener{
             
             this.add(PalabrasB[i]);
         }
-        
      }
     
     
-    public void crearSopaUI(char [][] Matrix) throws IOException, ClassNotFoundException{
-       
-        Sopa = new JLabel [Matrix.length][Matrix[0].length];
-        
+    public void crearSopaUI(char [][] Matrix) throws IOException, ClassNotFoundException {
+        Sopa = new JButton [Matrix.length][Matrix[0].length];
         for (int i = 0; i < Matrix.length; i++) {
-            
             for (int j = 0; j < Matrix[i].length; j++) {
-                
-                Sopa[i][j] = new JLabel("" + Matrix[i][j], SwingConstants.CENTER);
-                Sopa[i][j].setBounds(325 + (j*30), 85 + (i*30), 30, 30);
+                Sopa[i][j] = new JButton(/*i + "," + j + */Matrix[i][j] + "");
                 Sopa[i][j].setVisible(true);
                 Sopa[i][j].setOpaque(true);
-                Sopa[i][j].setBackground(Color.white);
-                Sopa[i][j].addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        JLabel Label = (JLabel)e.getSource();
-                        Label.setBackground(Color.BLUE);
-                        Label.setForeground(Color.white);
-                    }
-
-                });
+                Sopa[i][j].addActionListener(this);
+                Sopa[i][j].setBounds(325 + (j*30), 75 + (i*30), 30, 30);
+                Sopa[i][j].setBackground(Color.WHITE);
                 Sopa[i][j].setBorder(LineBorder.createBlackLineBorder());
+                Sopa[i][j].repaint();
                 this.add(Sopa[i][j]);
-                
             }
-            
         }
-        
+    }
+    
+    public void destacar(int xPos1, int yPos1, int xPos2, int yPos2, String palabra) {
+        Sopa[yPos1][xPos1].setBackground(Color.GREEN);
+        //..
+        Sopa[yPos2][xPos2].setBackground(Color.GREEN);
+        //Buscar palabra en lista y tachar
+        for (JLabel PalabrasB1 : PalabrasB) {
+            if (palabra.equals(PalabrasB1.getText())) {
+                PalabrasB1.setVisible(false);
+            }
+        }
+    }
+    
+    public void despintar(int xPos1, int yPos1, int xPos2, int yPos2) {
+        if(Sopa[yPos1][xPos1].getBackground() != Color.GREEN) {
+            Sopa[yPos1][xPos1].setBackground(Color.WHITE);
+        }
+        if(Sopa[yPos2][xPos2].getBackground() != Color.GREEN) {
+            Sopa[yPos2][xPos2].setBackground(Color.WHITE);
+        }
     }
     
     @Override
     public void actionPerformed(ActionEvent e) {
         String evento = e.getActionCommand();
+        
         if(evento.equals("Terminar juego")){
             
+        }
+        for(int y = 0; y < Sopa.length; y++) { 
+            for(int x = 0; x < Sopa[y].length; x++) {
+                if(e.getSource() == Sopa[y][x]){
+                    JButton boton = (JButton) e.getSource();
+                    if(boton.getBackground() != Color.GREEN) {
+                        boton.setBackground(Color.CYAN);
+                        //Label.setForeground(Color.BLACK);
+                    }
+                    System.out.println(x + "," + y);
+                    int pintar= Cliente_s.guardarSeleccion(x, y);
+                    if(pintar == 2) {
+                        destacar(Cliente_s.getxPos1(), Cliente_s.getyPos1(), Cliente_s.getxPos2(), Cliente_s.getyPos2(), Cliente_s.getPalabraEncontrada());
+                    }else if(pintar == 0) {
+                        despintar(Cliente_s.getxPos1(), Cliente_s.getyPos1(), Cliente_s.getxPos2(), Cliente_s.getyPos2());
+                    }
+                }
+            }
         }
     }
 }
