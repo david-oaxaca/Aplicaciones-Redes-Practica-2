@@ -14,18 +14,19 @@ import java.util.ArrayList;
  * @author David Arturo Oaxaca Pérez
  */
 public class Client_Sopa {
-    
     private ArrayList <Coordenadas> palabras;//Palabras dentro de la sopa de letras
     private char [][] SopaDeLetras;
     private boolean seleccionar;
     private int[] punto1, punto2;
     private String palabra_encontrada;
+    private int palabras_encontradas;
     
     public Client_Sopa(){
         seleccionar= false;
         punto1= new int[2];
         punto2= new int[2];
         palabra_encontrada= "";
+        palabras_encontradas= 0;
     }
     
     public int guardarSeleccion(int x, int y) {
@@ -52,6 +53,7 @@ public class Client_Sopa {
                     punto2[1] == palabra.getFinal_y()) {
                 System.out.println("Encontro: " + palabra.getPalabra());
                 palabra_encontrada= palabra.getPalabra();
+                palabras_encontradas++;
                 return 2;
             }else if(punto1[0] == palabra.getFinal_x() &&
                         punto1[1] == palabra.getFinal_y() &&
@@ -59,6 +61,7 @@ public class Client_Sopa {
                         punto2[1] == palabra.getInicio_y()) {
                 System.out.println("Encontro: " + palabra.getPalabra());
                 palabra_encontrada= palabra.getPalabra();
+                palabras_encontradas++;
                 return 2;
             }
         }
@@ -70,6 +73,7 @@ public class Client_Sopa {
     public int getxPos2() { return punto2[0]; }
     public int getyPos2() { return punto2[1]; }
     public String getPalabraEncontrada() { return palabra_encontrada; }
+    public int getPalabrasEncontradas() { return palabras_encontradas; }
     
     public void requestSopa( String opc ) throws IOException, ClassNotFoundException {
         

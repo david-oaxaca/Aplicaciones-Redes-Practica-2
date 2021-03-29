@@ -189,7 +189,8 @@ public class Client_GUI extends JFrame implements ActionListener{
         String evento = e.getActionCommand();
         
         if(evento.equals("Terminar juego")){
-            
+            JOptionPane.showMessageDialog(null, "Juego terminado, palabras encontradas: " + Cliente_s.getPalabrasEncontradas());
+            System.exit(0);
         }
         for(int y = 0; y < Sopa.length; y++) { 
             for(int x = 0; x < Sopa[y].length; x++) {
