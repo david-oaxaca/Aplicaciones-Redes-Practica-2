@@ -150,15 +150,14 @@ public class Client_GUI extends JFrame implements ActionListener{
             aux_min_y= (yPos1 < yPos2)? yPos1: yPos2;
             aux_max_y= (yPos1 > yPos2)? yPos1: yPos2;
             
+            aux_min_x++;
             if((yPos2 > yPos1 && xPos2 < xPos1) || (yPos1 > yPos2 && xPos1 < xPos2)) {//Diagonal arriba
-                aux_min_x++;
                 aux_max_y--;
                 for(; aux_max_y > aux_min_y; aux_max_y--) {
                     Sopa[aux_max_y][aux_min_x].setBackground(Color.GREEN);
                     aux_min_x++;
                 }
             }else {
-                aux_min_x++;
                 aux_min_y++;
                 System.out.println("abajo");
                 for(; aux_min_y < aux_max_y; aux_min_y++) {
