@@ -25,9 +25,8 @@ public class Client_GUI extends JFrame implements ActionListener{
     private JButton [][] Sopa;
     private JLabel [] PalabrasB;
     private JLabel lbl_Titulo, lbl_SubTitulo;
-    private JButton btn_Terminar, btn_Chequeo;
+    private JButton btn_Terminar;
     private Client_Sopa Cliente_s = new Client_Sopa();
-    private JPanel panel;
     
     public Client_GUI() throws IOException, ClassNotFoundException{
         iniciarVentana("Practica 2");
@@ -69,23 +68,10 @@ public class Client_GUI extends JFrame implements ActionListener{
         btn_Terminar.setBounds(35, 550, 125, 40);
         btn_Terminar.addActionListener(this);
         this.add(btn_Terminar);
-        
-        btn_Chequeo = new JButton("Checar selección");
-        btn_Chequeo.setBounds(175, 550, 135, 40);
-        btn_Chequeo.addActionListener(this);
-        this.add(btn_Chequeo);
     }
     
     public void iniciarSopa() throws IOException, ClassNotFoundException{
-        /*panel= new JPanel();
-        panel.setBounds(325, 75, 480, 480);
-        panel.setLayout(null);
-        panel.setBackground(Color.WHITE);
-        this.add(panel);*/
-        
         String Sopa_tema = seleccionSopa();
-        
-        //JOptionPane.showMessageDialog(null, Sopa_tema);
         
         if ((Sopa_tema != null) && (Sopa_tema.length() > 0)) {
             Cliente_s.requestSopa(Sopa_tema);
@@ -103,21 +89,16 @@ public class Client_GUI extends JFrame implements ActionListener{
                             null,"Seleccione el tema de la sopa de letras: \t\t\n\n",
                             "Practica 2: Sopa de letras", JOptionPane.QUESTION_MESSAGE,
                             null, sopa_tema, "Animales");
-
         return s;
-        
     }
     
-    public void crearPalabrasList(ArrayList <String> palabrasList) throws IOException, ClassNotFoundException{
-        
+    public void crearPalabrasList(ArrayList <String> palabrasList) throws IOException, ClassNotFoundException {
         PalabrasB = new JLabel[palabrasList.size()];
-        
         for (int i = 0; i < palabrasList.size(); i++) {
             PalabrasB[i] = new JLabel(palabrasList.get(i));
             PalabrasB[i].setBounds(40, 100 + (i*28), 250, 28);
             PalabrasB[i].setVisible(true);
             PalabrasB[i].setFont(new Font("Sans", Font.PLAIN, 14));
-            
             this.add(PalabrasB[i]);
         }
      }
@@ -141,9 +122,52 @@ public class Client_GUI extends JFrame implements ActionListener{
     }
     
     public void destacar(int xPos1, int yPos1, int xPos2, int yPos2, String palabra) {
+        //Coloreado de extremos
         Sopa[yPos1][xPos1].setBackground(Color.GREEN);
-        //..
         Sopa[yPos2][xPos2].setBackground(Color.GREEN);
+        //Colorear lo que esta entre las dos ubicaciones
+        int aux_min_x= 0;
+        int aux_max_x= 0;
+        int aux_min_y= 0;
+        int aux_max_y= 0;
+        if(yPos1 == yPos2) { //Horizontal
+            aux_min_x= (xPos1 < xPos2)? xPos1: xPos2;
+            aux_max_x= (xPos1 > xPos2)? xPos1: xPos2;
+            aux_min_x++;
+            for(; aux_min_x < aux_max_x; aux_min_x++) {
+                Sopa[yPos1][aux_min_x].setBackground(Color.GREEN);
+            }
+        } else if(xPos1 == xPos2) { //Vertical
+            aux_min_y= (yPos1 < yPos2)? yPos1: yPos2;
+            aux_max_y= (yPos1 > yPos2)? yPos1: yPos2;
+            aux_min_y++;
+            for(; aux_min_y < aux_max_y; aux_min_y++) {
+                Sopa[aux_min_y][xPos1].setBackground(Color.GREEN);
+            }
+        } else { //Diagonal
+            aux_min_x= (xPos1 < xPos2)? xPos1: xPos2;
+            aux_max_x= (xPos1 > xPos2)? xPos1: xPos2;
+            aux_min_y= (yPos1 < yPos2)? yPos1: yPos2;
+            aux_max_y= (yPos1 > yPos2)? yPos1: yPos2;
+            
+            if((yPos2 > yPos1 && xPos2 < xPos1) || (yPos1 > yPos2 && xPos1 < xPos2)) {//Diagonal arriba
+                aux_min_x++;
+                aux_max_y--;
+                for(; aux_max_y > aux_min_y; aux_max_y--) {
+                    Sopa[aux_max_y][aux_min_x].setBackground(Color.GREEN);
+                    aux_min_x++;
+                }
+            }else {
+                aux_min_x++;
+                aux_min_y++;
+                System.out.println("abajo");
+                for(; aux_min_y < aux_max_y; aux_min_y++) {
+                    Sopa[aux_min_y][aux_min_x].setBackground(Color.GREEN);
+                    aux_min_x++;
+                }
+            }
+        }
+        
         //Buscar palabra en lista y tachar
         for (JLabel PalabrasB1 : PalabrasB) {
             if (palabra.equals(PalabrasB1.getText())) {
@@ -174,7 +198,6 @@ public class Client_GUI extends JFrame implements ActionListener{
                     JButton boton = (JButton) e.getSource();
                     if(boton.getBackground() != Color.GREEN) {
                         boton.setBackground(Color.CYAN);
-                        //Label.setForeground(Color.BLACK);
                     }
                     System.out.println(x + "," + y);
                     int pintar= Cliente_s.guardarSeleccion(x, y);
