@@ -32,6 +32,7 @@ public class Client_GUI extends JFrame implements ActionListener{
         iniciarVentana("Practica 2");
         this.repaint();
         setVisible(true);
+        Cliente_s.inicializarTiempo();
     }
     
     public static void main(String[] args) throws IOException, ClassNotFoundException{
@@ -189,7 +190,11 @@ public class Client_GUI extends JFrame implements ActionListener{
         String evento = e.getActionCommand();
         
         if(evento.equals("Terminar juego")){
-            JOptionPane.showMessageDialog(null, "Juego terminado, palabras encontradas: " + Cliente_s.getPalabrasEncontradas());
+            long tiempo= Cliente_s.terminarTiempo();
+            tiempo= tiempo/1000; //segundos
+            int segundos= (int) tiempo % 60;
+            tiempo= tiempo/60; //minutos
+            JOptionPane.showMessageDialog(null, "Juego terminado, palabras encontradas: " + Cliente_s.getPalabrasEncontradas() + ", tiempo (minutos): " + tiempo + ":" + segundos);
             System.exit(0);
         }
         for(int y = 0; y < Sopa.length; y++) { 

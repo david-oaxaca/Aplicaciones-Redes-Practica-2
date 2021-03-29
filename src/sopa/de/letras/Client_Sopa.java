@@ -20,6 +20,7 @@ public class Client_Sopa {
     private int[] punto1, punto2;
     private String palabra_encontrada;
     private int palabras_encontradas;
+    private long tiempo_inicio;
     
     public Client_Sopa(){
         seleccionar= false;
@@ -74,6 +75,15 @@ public class Client_Sopa {
     public int getyPos2() { return punto2[1]; }
     public String getPalabraEncontrada() { return palabra_encontrada; }
     public int getPalabrasEncontradas() { return palabras_encontradas; }
+    
+    public void inicializarTiempo() {
+        tiempo_inicio= System.currentTimeMillis();
+    }
+    
+    public long terminarTiempo() {
+        long tiempo_final= System.currentTimeMillis();
+        return tiempo_final - tiempo_inicio;
+    }
     
     public void requestSopa( String opc ) throws IOException, ClassNotFoundException {
         
