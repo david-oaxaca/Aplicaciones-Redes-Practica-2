@@ -174,6 +174,16 @@ public class Client_GUI extends JFrame implements ActionListener{
                 PalabrasB1.setVisible(false);
             }
         }
+        
+        //Condicional para saber si el cliente ya gano
+        if(Cliente_s.getPalabrasEncontradas() == 15){
+            long tiempo= Cliente_s.terminarTiempo();
+            tiempo= tiempo/1000; //segundos
+            int segundos= (int) tiempo % 60;
+            tiempo= tiempo/60; //minutos
+            JOptionPane.showMessageDialog(null, "FELICIDADES!!!  \nHAZ GANADO!!!!! \nTiempo (minutos): " + tiempo + ":" + segundos);
+            System.exit(0);
+        }
     }
     
     public void despintar(int xPos1, int yPos1, int xPos2, int yPos2) {
@@ -194,7 +204,7 @@ public class Client_GUI extends JFrame implements ActionListener{
             tiempo= tiempo/1000; //segundos
             int segundos= (int) tiempo % 60;
             tiempo= tiempo/60; //minutos
-            JOptionPane.showMessageDialog(null, "Juego terminado, palabras encontradas: " + Cliente_s.getPalabrasEncontradas() + ", tiempo (minutos): " + tiempo + ":" + segundos);
+            JOptionPane.showMessageDialog(null, "Juego terminado\nPalabras encontradas: " + Cliente_s.getPalabrasEncontradas() + "\nTiempo (minutos): " + tiempo + ":" + segundos);
             System.exit(0);
         }
         for(int y = 0; y < Sopa.length; y++) { 
